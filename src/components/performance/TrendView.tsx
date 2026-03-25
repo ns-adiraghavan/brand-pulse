@@ -28,10 +28,7 @@ interface Props {
 // ── Custom Tooltip ──────────────────────────────────────────────────────────
 
 const CustomTooltip = ({
-  active,
-  payload,
-  label,
-  brands,
+  active, payload, label, brands,
 }: {
   active?: boolean;
   payload?: { dataKey: string; value: number; color: string }[];
@@ -40,7 +37,7 @@ const CustomTooltip = ({
 }) => {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-lg border border-border-dim bg-surface p-3 shadow-xl">
+    <div className="rounded-lg border border-border-dim p-3 shadow-xl" style={{ background: '#0F172A' }}>
       <p className="mb-2 text-xs font-semibold text-muted-foreground">{label} 2024</p>
       {payload.map((entry) => {
         const brand = brands.find((b) => b.id === entry.dataKey);

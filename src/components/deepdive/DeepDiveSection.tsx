@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useFilters } from '@/context/FilterContext';
 import { getMockData } from '@/data/mockData';
+import { useChartFade } from '@/hooks/useChartFade';
 import SegmentIndexTable from './SegmentIndexTable';
 import BrandSegmentGrid from './BrandSegmentGrid';
 import InsightCallouts from './InsightCallouts';
@@ -11,6 +12,7 @@ const DeepDiveSection = () => {
   const { filters } = useFilters();
   const data = useMemo(() => getMockData(filters), [filters]);
   const [mode, setMode] = useState<ViewMode>('segment');
+  const fadeClass = useChartFade(filters);
 
   return (
     <div className="space-y-6">
@@ -36,17 +38,19 @@ const DeepDiveSection = () => {
       </div>
 
       {/* Matrix or Brand Grid */}
-      {mode === 'segment' ? (
-        <SegmentIndexTable matrix={data.deepDiveMatrix} />
-      ) : (
-        <BrandSegmentGrid
-          brands={data.brands}
-          funnel={data.funnel}
-          matrix={data.deepDiveMatrix}
-        />
-      )}
+      <div className={fadeClass}>
+        {mode === 'segment' ? (
+          <SegmentIndexTable matrix={data.deepDiveMatrix} />
+        ) : (
+          <BrandSegmentGrid
+            brands={data.brands}
+            funnel={data.funnel}
+            matrix={data.deepDiveMatrix}
+          />
+        )}
+      </div>
 
-      {/* Insight Callouts — always visible */}
+      {/* Insight Callouts */}
       <div>
         <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
           Key Insights

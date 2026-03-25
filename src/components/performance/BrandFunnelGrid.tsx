@@ -1,9 +1,8 @@
 import { ArrowUp, ArrowDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useFilters } from '@/context/FilterContext';
+import EmptyState from '@/components/EmptyState';
 import type { Brand, FunnelEntry, WTPBrand } from '@/data/mockData';
-
-// ── Constants ────────────────────────────────────────────────────────────────
 
 type FunnelBarKey = 'totalAwareness' | 'familiarity' | 'consideration' | 'purchaseIntent';
 
@@ -21,8 +20,6 @@ const WTP_SEGMENTS = [
   { key: 'unwilling'     as const, label: 'Unwilling',         color: '#FB7185' },
 ];
 
-// ── Category Average ─────────────────────────────────────────────────────────
-
 type CatAvg = Record<FunnelBarKey, number>;
 
 function computeAvg(funnel: FunnelEntry[]): CatAvg {
@@ -35,8 +32,6 @@ function computeAvg(funnel: FunnelEntry[]): CatAvg {
   };
 }
 
-// ── Brand Funnel Card ────────────────────────────────────────────────────────
-
 interface CardProps {
   brand: Brand;
   funnel: FunnelEntry;
@@ -45,13 +40,10 @@ interface CardProps {
   isCompany: boolean;
   isSelected: boolean;
   anySelected: boolean;
+  onClick: () => void;
 }
 
-const BrandFunnelCard = ({ brand, funnel: f, wtp, avg, isCompany, isSelected, anySelected }: CardProps) => {
-  // Visual state:
-  //  • isSelected (from Perception heatmap click) → brand-colored glow ring
-  //  • isCompany + not selected → primary blue glow (default)
-  //  • anySelected && !isSelected && !isCompany → dimmed
+const BrandFunnelCard = ({ brand, funnel: f, wtp, avg, isCompany, isSelected, anySelected, onClick }: CardProps) => {
   const dimmed = anySelected && !isSelected && !isCompany;
 
   const cardStyle = (() => {
@@ -73,8 +65,10 @@ const BrandFunnelCard = ({ brand, funnel: f, wtp, avg, isCompany, isSelected, an
 
   return (
     <div
+      onClick={onClick}
       className={cn(
-        'relative flex flex-col gap-3 rounded-xl border p-3 transition-all duration-300',
+        'relative flex flex-col gap-3 rounded-xl border p-3 transition-all duration-300 cursor-pointer',
+        'hover:border-primary/40 hover:shadow-md hover:shadow-primary/5',
         isCompany && !isSelected ? 'border-primary/50' : 'border-border-dim bg-surface',
         dimmed && 'opacity-50 scale-[0.98]',
       )}
@@ -83,10 +77,10 @@ const BrandFunnelCard = ({ brand, funnel: f, wtp, avg, isCompany, isSelected, an
       {/* Selected indicator pill */}
       {isSelected && (
         <div
-          className="absolute -top-2.5 left-1/2 -translate-x-1/2 rounded-full px-2 py-0.5 text-[9px] font-bold"
+          className="absolute -top-2.5 left-1/2 -translate-x-1/2 rounded-full px-2 py-0.5 text-[9px] font-bold whitespace-nowrap"
           style={{ background: brand.color, color: '#fff' }}
         >
-          ● highlighted from Perception
+          ● highlighted
         </div>
       )}
 
@@ -96,17 +90,12 @@ const BrandFunnelCard = ({ brand, funnel: f, wtp, avg, isCompany, isSelected, an
         <span className="truncate text-xs font-bold text-foreground">{brand.label}</span>
       </div>
 
-      {/* BEI badge — absolute top-right */}
+      {/* BEI badge */}
       <div
         className="absolute right-2.5 top-2.5 flex h-10 w-10 flex-col items-center justify-center rounded-full"
-        style={{
-          border: `1.5px solid ${brand.color}55`,
-          background: `${brand.color}18`,
-        }}
+        style={{ border: `1.5px solid ${brand.color}55`, background: `${brand.color}18` }}
       >
-        <span className="text-[13px] font-bold leading-none text-foreground">
-          {f.brandEquityIndex.toFixed(1)}
-        </span>
+        <span className="text-[13px] font-bold leading-none text-foreground">{f.brandEquityIndex.toFixed(1)}</span>
         <span className="text-[8px] leading-none text-muted-foreground">/10</span>
       </div>
 
@@ -116,14 +105,11 @@ const BrandFunnelCard = ({ brand, funnel: f, wtp, avg, isCompany, isSelected, an
           const value = f[key];
           const delta = Math.round(value - avg[key]);
           const above = delta >= 0;
-
           return (
             <div key={key}>
               <div className="mb-0.5 flex items-baseline justify-between gap-1">
                 <span className="text-[10px] text-muted-foreground leading-none">{label}</span>
-                <span className="text-[11px] font-bold tabular-nums text-foreground leading-none">
-                  {value}%
-                </span>
+                <span className="text-[11px] font-bold tabular-nums text-foreground leading-none">{value}%</span>
               </div>
               <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-2">
                 <div
@@ -133,16 +119,13 @@ const BrandFunnelCard = ({ brand, funnel: f, wtp, avg, isCompany, isSelected, an
               </div>
               <div className={cn('mt-0.5 flex items-center gap-0.5', above ? 'text-emerald-400' : 'text-rose-400')}>
                 {above ? <ArrowUp className="h-2.5 w-2.5 shrink-0" /> : <ArrowDown className="h-2.5 w-2.5 shrink-0" />}
-                <span className="text-[9px] font-medium">
-                  {above ? '+' : ''}{delta} avg
-                </span>
+                <span className="text-[9px] font-medium">{above ? '+' : ''}{delta} avg</span>
               </div>
             </div>
           );
         })}
       </div>
 
-      {/* Divider */}
       <div className="border-t border-border-dim" />
 
       {/* WTP stacked bar */}
@@ -152,26 +135,18 @@ const BrandFunnelCard = ({ brand, funnel: f, wtp, avg, isCompany, isSelected, an
         </p>
         <div className="flex h-2.5 w-full overflow-hidden rounded-full">
           {WTP_SEGMENTS.map(({ key, color }) => (
-            <div
-              key={key}
-              className="h-full transition-all duration-500"
-              style={{ width: `${wtp[key]}%`, backgroundColor: color }}
-            />
+            <div key={key} className="h-full transition-all duration-500" style={{ width: `${wtp[key]}%`, backgroundColor: color }} />
           ))}
         </div>
         <div className="mt-1 flex justify-between">
           {WTP_SEGMENTS.map(({ key, color }) => (
-            <span key={key} className="text-[9px] font-semibold tabular-nums" style={{ color }}>
-              {wtp[key]}%
-            </span>
+            <span key={key} className="text-[9px] font-semibold tabular-nums" style={{ color }}>{wtp[key]}%</span>
           ))}
         </div>
       </div>
     </div>
   );
 };
-
-// ── Grid ─────────────────────────────────────────────────────────────────────
 
 interface Props {
   brands: Brand[];
@@ -181,11 +156,19 @@ interface Props {
 
 const BrandFunnelGrid = ({ brands, funnel, willingnessToPay }: Props) => {
   const avg = computeAvg(funnel);
-  const { selectedBrand } = useFilters();
+  const { selectedBrand, setSelectedBrand } = useFilters();
+
+  const isAllZero = funnel.every(
+    (f) => f.awareness === 0 && f.consideration === 0 && f.purchaseIntent === 0,
+  );
+  if (isAllZero) return <EmptyState />;
+
+  const handleCardClick = (brandId: string) => {
+    setSelectedBrand(selectedBrand === brandId ? null : brandId);
+  };
 
   return (
     <div className="space-y-4">
-      {/* 5-column scrollable grid */}
       <div className="overflow-x-auto pb-1">
         <div className="grid min-w-[820px] grid-cols-5 gap-3">
           {brands.map((brand) => {
@@ -201,23 +184,23 @@ const BrandFunnelGrid = ({ brands, funnel, willingnessToPay }: Props) => {
                 isCompany={brand.id === 'company'}
                 isSelected={selectedBrand === brand.id}
                 anySelected={selectedBrand !== null}
+                onClick={() => handleCardClick(brand.id)}
               />
             );
           })}
         </div>
       </div>
 
-      {/* Shared WTP legend */}
+      {/* WTP legend */}
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2 rounded-xl border border-border-dim bg-surface px-5 py-3">
-        <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-          WTP:
-        </span>
+        <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">WTP:</span>
         {WTP_SEGMENTS.map(({ label, color }) => (
           <div key={label} className="flex items-center gap-1.5">
             <div className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: color }} />
             <span className="text-xs text-muted-foreground">{label}</span>
           </div>
         ))}
+        <p className="ml-auto text-[10px] text-muted-foreground italic">Click a brand card to highlight across sections</p>
       </div>
     </div>
   );

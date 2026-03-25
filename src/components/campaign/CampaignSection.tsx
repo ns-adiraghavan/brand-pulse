@@ -435,22 +435,27 @@ const CampaignSection = () => {
   const { filters } = useFilters();
   const { campaignKpis } = useMemo(() => getMockData(filters), [filters]);
 
+  // Empty state: all KPIs are 0
+  const isEmpty = campaignKpis.adRecall === 0 && campaignKpis.campaignAwareness === 0 && campaignKpis.messageRecall === 0;
+  if (isEmpty) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-border-dim bg-surface px-6 py-12 text-center">
+        <p className="text-sm text-muted-foreground">No data available for this filter combination. Try adjusting your selections.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-5">
-      {/* A: KPI cards */}
       <CampaignKPICards
         adRecall={campaignKpis.adRecall}
         campaignAwareness={campaignKpis.campaignAwareness}
         messageRecall={campaignKpis.messageRecall}
       />
-
-      {/* B + D: Action chart & Lift card */}
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_320px]">
         <ActionTakenChart data={campaignKpis.actionTaken} />
         <CampaignLiftCard adRecall={campaignKpis.adRecall} />
       </div>
-
-      {/* C: Source of Recall */}
       <SourceOfRecallChart data={campaignKpis.sourceOfRecall} />
     </div>
   );

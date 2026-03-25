@@ -19,7 +19,7 @@ const OwnershipTooltip = ({ active, payload }: { active?: boolean; payload?: { p
   if (!active || !payload?.length) return null;
   const d = payload[0].payload;
   return (
-    <div className="rounded-lg border border-border-dim bg-surface p-3 shadow-xl min-w-[180px]">
+    <div className="rounded-lg border border-border-dim p-3 shadow-xl min-w-[180px]" style={{ background: '#0F172A' }}>
       <p className="mb-1.5 text-xs font-bold text-foreground">{d.attribute}</p>
       <p className="mb-2 text-[10px] text-muted-foreground">
         Leader:{' '}
@@ -94,7 +94,7 @@ const AttributeOwnershipChart = ({ brands, perceptionHeatmap }: Props) => {
         >
           <CartesianGrid
             strokeDasharray="3 3"
-            stroke="hsl(215 20% 28% / 0.5)"
+            stroke="#334155"
             horizontal={false}
           />
           <XAxis
