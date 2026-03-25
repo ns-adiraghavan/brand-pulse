@@ -110,6 +110,9 @@ const DashboardShell = ({ onLogout }: { onLogout: () => void }) => {
           Filters
         </button>
       </div>
+
+      {/* Copilot AI Panel */}
+      <Copilot />
     </div>
   );
 };
