@@ -5,6 +5,7 @@ import PerformanceSection from "@/components/performance/PerformanceSection";
 import PerceptionSection from "@/components/perception/PerceptionSection";
 import CampaignSection from "@/components/campaign/CampaignSection";
 import BehaviorSection from "@/components/behavior/BehaviorSection";
+import CustomerSection from "@/components/customer/CustomerSection";
 
 interface SectionCardProps {
   id: string;
