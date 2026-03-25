@@ -161,6 +161,15 @@ const SectionCard = ({ id, label }: SectionCardProps) => {
     );
   }
 
+  if (id === "customer") {
+    return (
+      <section id="customer" className="scroll-mt-20">
+        <SectionHeading id="customer" label="Customer Understanding" icon="👥" />
+        <CustomerSection />
+      </section>
+    );
+  }
+
   return <PlaceholderSection id={id} label={label} />;
 };
 
