@@ -32,7 +32,7 @@ const SECTION_META: Record<string, { icon: string; description: string }> = {
 
 // ── Full-section heading wrapper ──────────────────────────────────────────────
 
-function SectionHeading({ id, label, icon }: { id: string; label: string; icon: string }) {
+function SectionHeading({ label, icon }: { id?: string; label: string; icon: string }) {
   return (
     <div className="mb-5 flex items-center gap-3">
       <span className="text-xl">{icon}</span>
