@@ -55,24 +55,35 @@ const HeatmapTable = ({ brands, perceptionHeatmap }: Props) => {
 
   return (
     <div className="space-y-3">
-      {/* Colour legend */}
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-        <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
-          Scale:
-        </span>
-        {LEGEND_ITEMS.map(({ label, bg, border, range }) => (
-          <div key={label} className="flex items-center gap-1.5">
-            <div
-              className="h-3.5 w-8 rounded-sm"
-              style={{
-                background: bg,
-                border: border ? `1px solid ${border}` : undefined,
-              }}
-            />
-            <span className="text-[10px] text-muted-foreground">{label}</span>
-            <span className="text-[10px] text-muted-foreground/50">{range}</span>
-          </div>
-        ))}
+      {/* Top legend row: perception scale + index score legend */}
+      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
+        {/* Perception colour scale */}
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+            Scale:
+          </span>
+          {LEGEND_ITEMS.map(({ label, bg, border, range }) => (
+            <div key={label} className="flex items-center gap-1.5">
+              <div
+                className="h-3.5 w-8 rounded-sm"
+                style={{
+                  background: bg,
+                  border: border ? `1px solid ${border}` : undefined,
+                }}
+              />
+              <span className="text-[10px] text-muted-foreground">{label}</span>
+              <span className="text-[10px] text-muted-foreground/50">{range}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Index score legend */}
+        <div className="flex items-center gap-3 rounded-lg border border-border-dim bg-surface-2 px-3 py-1.5">
+          <span className="text-[10px] text-muted-foreground">Index:</span>
+          <span className="text-[10px] font-bold" style={{ color: '#22C55E' }}>↑ ≥110 over-index</span>
+          <span className="text-[10px] font-bold" style={{ color: '#EF4444' }}>↓ ≤90 under-index</span>
+          <span className="text-[10px] text-muted-foreground">91–109 avg</span>
+        </div>
       </div>
 
       {/* Table */}
