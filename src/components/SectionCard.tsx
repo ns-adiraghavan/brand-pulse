@@ -5,6 +5,7 @@ import PerformanceSection from "@/components/performance/PerformanceSection";
 import PerceptionSection from "@/components/perception/PerceptionSection";
 import CampaignSection from "@/components/campaign/CampaignSection";
 import BehaviorSection from "@/components/behavior/BehaviorSection";
+import CustomerSection from "@/components/customer/CustomerSection";
 
 interface SectionCardProps {
   id: string;
@@ -156,6 +157,15 @@ const SectionCard = ({ id, label }: SectionCardProps) => {
       <section id="behavior" className="scroll-mt-20">
         <SectionHeading id="behavior" label="Category & Behaviour" icon="🛒" />
         <BehaviorSection />
+      </section>
+    );
+  }
+
+  if (id === "customer") {
+    return (
+      <section id="customer" className="scroll-mt-20">
+        <SectionHeading id="customer" label="Customer Understanding" icon="👥" />
+        <CustomerSection />
       </section>
     );
   }
