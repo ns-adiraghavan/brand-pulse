@@ -9,7 +9,7 @@ const Index = () => {
     return <LoginScreen onLogin={() => setIsAuthenticated(true)} />;
   }
 
-  return <DashboardShell />;
+  return <DashboardShell onLogout={() => setIsAuthenticated(false)} />;
 };
 
 export default Index;
