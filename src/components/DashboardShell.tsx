@@ -5,6 +5,7 @@ import SectionCard from "@/components/SectionCard";
 import FilterPillBar from "@/components/FilterPillBar";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { useFilters } from "@/context/FilterContext";
+import Copilot from "@/components/Copilot";
 
 const sections = [
   { id: "performance", label: "Performance" },
