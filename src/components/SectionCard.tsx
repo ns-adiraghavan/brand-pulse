@@ -2,17 +2,16 @@ import { useMemo } from "react";
 import { useFilters } from "@/context/FilterContext";
 import { getMockData } from "@/data/mockData";
 import PerformanceSection from "@/components/performance/PerformanceSection";
+import PerceptionSection from "@/components/perception/PerceptionSection";
 
 interface SectionCardProps {
   id: string;
   label: string;
 }
 
-const sectionMeta: Record<string, { icon: string; description: string }> = {
-  perception: {
-    icon: "🧠",
-    description: "Awareness, consideration, preference, and brand equity funnel metrics.",
-  },
+// ── Section heading row ───────────────────────────────────────────────────────
+
+const SECTION_META: Record<string, { icon: string; description: string }> = {
   campaign: {
     icon: "📣",
     description: "Campaign recall, messaging resonance, and media effectiveness analysis.",
@@ -31,67 +30,52 @@ const sectionMeta: Record<string, { icon: string; description: string }> = {
   },
 };
 
-// ── Performance section wrapper ──────────────────────────────────────────────
+// ── Full-section heading wrapper ──────────────────────────────────────────────
 
-const PerformanceSectionWrapper = () => (
-  <section id="performance" className="scroll-mt-20">
+function SectionHeading({ id, label, icon }: { id: string; label: string; icon: string }) {
+  return (
     <div className="mb-5 flex items-center gap-3">
-      <span className="text-xl">📊</span>
-      <h2 className="text-lg font-bold tracking-tight text-foreground">Performance</h2>
+      <span className="text-xl">{icon}</span>
+      <h2 className="text-lg font-bold tracking-tight text-foreground">{label}</h2>
       <div className="flex-1 border-t border-border-dim" />
       <span className="rounded-full bg-primary/10 px-3 py-0.5 text-xs font-medium text-primary">
         Wave Q4 2024
       </span>
     </div>
-    <PerformanceSection />
-  </section>
-);
+  );
+}
 
 // ── Placeholder sections ─────────────────────────────────────────────────────
 
 const PlaceholderSection = ({ id, label }: SectionCardProps) => {
   const { filters } = useFilters();
   const data = useMemo(() => getMockData(filters), [filters]);
-  const meta = sectionMeta[id] ?? { icon: "📋", description: "Content coming soon." };
+  const meta = SECTION_META[id] ?? { icon: "📋", description: "Content coming soon." };
 
   const previewStats = useMemo(() => {
-    if (id === "perception") {
-      const c = data.funnel.find((f) => f.brandId === "company")!;
-      return [
-        { label: "Familiarity",    value: `${c.familiarity}%`       },
-        { label: "Consideration",  value: `${c.consideration}%`     },
-        { label: "BEI",            value: `${c.brandEquityIndex}`   },
-      ];
-    }
-    if (id === "campaign") {
-      return [
-        { label: "Ad Recall",     value: `${data.campaignKpis.adRecall}%`           },
-        { label: "Cmpn. Aware.",  value: `${data.campaignKpis.campaignAwareness}%`  },
-        { label: "Msg Recall",    value: `${data.campaignKpis.messageRecall}%`      },
-      ];
-    }
-    if (id === "behavior") {
-      return [
-        { label: "Co. SoV",          value: `${data.behavior.shareOfAwareness["company"]}%`            },
-        { label: "SoW",              value: `${data.kpis.shareOfWallet}%`                              },
-        { label: "Purchase Intent",  value: `${data.funnel.find((f) => f.brandId === "company")!.purchaseIntent}%` },
-      ];
-    }
-    if (id === "customer") {
-      return [
-        { label: "App Installed",  value: `${data.customerProfile.appInstalled.Yes}%`     },
-        { label: "Heavy Users",    value: `${data.customerProfile.usageFrequency.Heavy}%` },
-        { label: "Mid Income",     value: `${data.customerProfile.income.Mid}%`           },
-      ];
-    }
+    if (id === "campaign") return [
+      { label: "Ad Recall",     value: `${data.campaignKpis.adRecall}%`          },
+      { label: "Cmpn. Aware.",  value: `${data.campaignKpis.campaignAwareness}%` },
+      { label: "Msg Recall",    value: `${data.campaignKpis.messageRecall}%`     },
+    ];
+    if (id === "behavior") return [
+      { label: "Co. SoV",          value: `${data.behavior.shareOfAwareness["company"]}%`                              },
+      { label: "SoW",              value: `${data.kpis.shareOfWallet}%`                                                },
+      { label: "Purchase Intent",  value: `${data.funnel.find((f) => f.brandId === "company")!.purchaseIntent}%`       },
+    ];
+    if (id === "customer") return [
+      { label: "App Installed",  value: `${data.customerProfile.appInstalled.Yes}%`     },
+      { label: "Heavy Users",    value: `${data.customerProfile.usageFrequency.Heavy}%` },
+      { label: "Mid Income",     value: `${data.customerProfile.income.Mid}%`           },
+    ];
     if (id === "deepdive") {
-      const appUser   = data.deepDiveMatrix.find((r) => r.segment === "App User")!;
-      const highInc   = data.deepDiveMatrix.find((r) => r.segment === "High Income")!;
-      const genZ      = data.deepDiveMatrix.find((r) => r.segment === "Gen Z (18-24)")!;
+      const au = data.deepDiveMatrix.find((r) => r.segment === "App User")!;
+      const hi = data.deepDiveMatrix.find((r) => r.segment === "High Income")!;
+      const gz = data.deepDiveMatrix.find((r) => r.segment === "Gen Z (18-24)")!;
       return [
-        { label: "App User Aware.",   value: `${appUser.awareness}`  },
-        { label: "High Inc. Intent",  value: `${highInc.purchaseIntent}` },
-        { label: "GenZ Aware.",       value: `${genZ.awareness}` },
+        { label: "App User Aware.",   value: `${au.awareness}`        },
+        { label: "High Inc. Intent",  value: `${hi.purchaseIntent}`   },
+        { label: "GenZ Aware.",       value: `${gz.awareness}`        },
       ];
     }
     return [];
@@ -99,14 +83,7 @@ const PlaceholderSection = ({ id, label }: SectionCardProps) => {
 
   return (
     <section id={id} className="scroll-mt-20">
-      <div className="mb-4 flex items-center gap-3">
-        <span className="text-xl">{meta.icon}</span>
-        <h2 className="text-lg font-bold tracking-tight text-foreground">{label}</h2>
-        <div className="flex-1 border-t border-border-dim" />
-        <span className="rounded-full bg-primary/10 px-3 py-0.5 text-xs font-medium text-primary">
-          Wave Q4 2024
-        </span>
-      </div>
+      <SectionHeading id={id} label={label} icon={meta.icon} />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
         <div className="col-span-full rounded-xl border border-border-dim bg-surface p-5">
@@ -130,14 +107,10 @@ const PlaceholderSection = ({ id, label }: SectionCardProps) => {
         ))}
 
         {Array.from({ length: Math.max(0, 3 - previewStats.length) }).map((_, i) => (
-          <div
-            key={`skeleton-${i}`}
-            className="flex flex-col gap-2 rounded-xl border border-border-dim bg-surface p-5"
-          >
+          <div key={i} className="flex flex-col gap-2 rounded-xl border border-border-dim bg-surface p-5">
             <div className="h-2.5 w-24 animate-pulse rounded bg-surface-2" />
             <div className="h-8 w-16 animate-pulse rounded bg-surface-2" />
             <div className="h-2 w-full animate-pulse rounded bg-surface-2" />
-            <div className="h-2 w-3/4 animate-pulse rounded bg-surface-2" />
             <p className="mt-2 text-xs text-muted-foreground">Charts coming in next phase.</p>
           </div>
         ))}
@@ -146,10 +119,27 @@ const PlaceholderSection = ({ id, label }: SectionCardProps) => {
   );
 };
 
-// ── Router ───────────────────────────────────────────────────────────────────
+// ── Router ────────────────────────────────────────────────────────────────────
 
 const SectionCard = ({ id, label }: SectionCardProps) => {
-  if (id === "performance") return <PerformanceSectionWrapper />;
+  if (id === "performance") {
+    return (
+      <section id="performance" className="scroll-mt-20">
+        <SectionHeading id="performance" label="Performance" icon="📊" />
+        <PerformanceSection />
+      </section>
+    );
+  }
+
+  if (id === "perception") {
+    return (
+      <section id="perception" className="scroll-mt-20">
+        <SectionHeading id="perception" label="Perception" icon="🧠" />
+        <PerceptionSection />
+      </section>
+    );
+  }
+
   return <PlaceholderSection id={id} label={label} />;
 };
 
