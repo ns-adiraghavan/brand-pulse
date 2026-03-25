@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useFilters } from "@/context/FilterContext";
 import { getMockData } from "@/data/mockData";
+import PerformanceSection from "@/components/performance/PerformanceSection";
 
 interface SectionCardProps {
   id: string;
@@ -8,10 +9,6 @@ interface SectionCardProps {
 }
 
 const sectionMeta: Record<string, { icon: string; description: string }> = {
-  performance: {
-    icon: "📊",
-    description: "Brand KPI trends, market share, and share of voice across tracked categories.",
-  },
   perception: {
     icon: "🧠",
     description: "Awareness, consideration, preference, and brand equity funnel metrics.",
@@ -34,56 +31,67 @@ const sectionMeta: Record<string, { icon: string; description: string }> = {
   },
 };
 
-const SectionCard = ({ id, label }: SectionCardProps) => {
+// ── Performance section wrapper ──────────────────────────────────────────────
+
+const PerformanceSectionWrapper = () => (
+  <section id="performance" className="scroll-mt-20">
+    <div className="mb-5 flex items-center gap-3">
+      <span className="text-xl">📊</span>
+      <h2 className="text-lg font-bold tracking-tight text-foreground">Performance</h2>
+      <div className="flex-1 border-t border-border-dim" />
+      <span className="rounded-full bg-primary/10 px-3 py-0.5 text-xs font-medium text-primary">
+        Wave Q4 2024
+      </span>
+    </div>
+    <PerformanceSection />
+  </section>
+);
+
+// ── Placeholder sections ─────────────────────────────────────────────────────
+
+const PlaceholderSection = ({ id, label }: SectionCardProps) => {
   const { filters } = useFilters();
   const data = useMemo(() => getMockData(filters), [filters]);
   const meta = sectionMeta[id] ?? { icon: "📋", description: "Content coming soon." };
 
-  // Show a few live KPI numbers depending on which section we're in
   const previewStats = useMemo(() => {
-    if (id === "performance") {
-      const c = data.funnel.find((f) => f.brandId === "company")!;
-      return [
-        { label: "TOMA", value: `${data.kpis.toma}%` },
-        { label: "NPS", value: `${data.kpis.nps}` },
-        { label: "Awareness", value: `${c.awareness}%` },
-      ];
-    }
     if (id === "perception") {
       const c = data.funnel.find((f) => f.brandId === "company")!;
       return [
-        { label: "Familiarity", value: `${c.familiarity}%` },
-        { label: "Consideration", value: `${c.consideration}%` },
-        { label: "BEI", value: `${c.brandEquityIndex}` },
+        { label: "Familiarity",    value: `${c.familiarity}%`       },
+        { label: "Consideration",  value: `${c.consideration}%`     },
+        { label: "BEI",            value: `${c.brandEquityIndex}`   },
       ];
     }
     if (id === "campaign") {
       return [
-        { label: "Ad Recall",    value: `${data.campaignKpis.adRecall}%` },
-        { label: "Cmpn. Aware.", value: `${data.campaignKpis.campaignAwareness}%` },
-        { label: "Msg Recall",   value: `${data.campaignKpis.messageRecall}%` },
+        { label: "Ad Recall",     value: `${data.campaignKpis.adRecall}%`           },
+        { label: "Cmpn. Aware.",  value: `${data.campaignKpis.campaignAwareness}%`  },
+        { label: "Msg Recall",    value: `${data.campaignKpis.messageRecall}%`      },
       ];
     }
     if (id === "behavior") {
       return [
-        { label: "Co. SoV",   value: `${data.behavior.shareOfAwareness["company"]}%` },
-        { label: "SoW",        value: `${data.kpis.shareOfWallet}%` },
-        { label: "Purchase Intent", value: `${data.funnel.find((f) => f.brandId === "company")!.purchaseIntent}%` },
+        { label: "Co. SoV",          value: `${data.behavior.shareOfAwareness["company"]}%`            },
+        { label: "SoW",              value: `${data.kpis.shareOfWallet}%`                              },
+        { label: "Purchase Intent",  value: `${data.funnel.find((f) => f.brandId === "company")!.purchaseIntent}%` },
       ];
     }
     if (id === "customer") {
       return [
-        { label: "App Installed", value: `${data.customerProfile.appInstalled.Yes}%` },
-        { label: "Heavy Users",   value: `${data.customerProfile.usageFrequency.Heavy}%` },
-        { label: "Mid Income",    value: `${data.customerProfile.income.Mid}%` },
+        { label: "App Installed",  value: `${data.customerProfile.appInstalled.Yes}%`     },
+        { label: "Heavy Users",    value: `${data.customerProfile.usageFrequency.Heavy}%` },
+        { label: "Mid Income",     value: `${data.customerProfile.income.Mid}%`           },
       ];
     }
     if (id === "deepdive") {
-      const appUser = data.deepDiveMatrix.find((r) => r.segment === "App User")!;
+      const appUser   = data.deepDiveMatrix.find((r) => r.segment === "App User")!;
+      const highInc   = data.deepDiveMatrix.find((r) => r.segment === "High Income")!;
+      const genZ      = data.deepDiveMatrix.find((r) => r.segment === "Gen Z (18-24)")!;
       return [
-        { label: "App User Aware.", value: `${appUser.awareness}` },
-        { label: "High Inc. Intent", value: `${data.deepDiveMatrix.find((r) => r.segment === "High Income")!.purchaseIntent}` },
-        { label: "GenZ Aware.",      value: `${data.deepDiveMatrix.find((r) => r.segment === "Gen Z (18-24)")!.awareness}` },
+        { label: "App User Aware.",   value: `${appUser.awareness}`  },
+        { label: "High Inc. Intent",  value: `${highInc.purchaseIntent}` },
+        { label: "GenZ Aware.",       value: `${genZ.awareness}` },
       ];
     }
     return [];
@@ -91,7 +99,6 @@ const SectionCard = ({ id, label }: SectionCardProps) => {
 
   return (
     <section id={id} className="scroll-mt-20">
-      {/* Section heading row */}
       <div className="mb-4 flex items-center gap-3">
         <span className="text-xl">{meta.icon}</span>
         <h2 className="text-lg font-bold tracking-tight text-foreground">{label}</h2>
@@ -101,9 +108,7 @@ const SectionCard = ({ id, label }: SectionCardProps) => {
         </span>
       </div>
 
-      {/* Content grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {/* Description card */}
         <div className="col-span-full rounded-xl border border-border-dim bg-surface p-5">
           <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
             Section Overview
@@ -111,7 +116,6 @@ const SectionCard = ({ id, label }: SectionCardProps) => {
           <p className="text-sm text-muted-foreground">{meta.description}</p>
         </div>
 
-        {/* Live preview stat tiles (driven by filtered data) */}
         {previewStats.map((stat) => (
           <div
             key={stat.label}
@@ -121,13 +125,10 @@ const SectionCard = ({ id, label }: SectionCardProps) => {
               {stat.label}
             </p>
             <p className="text-3xl font-bold text-foreground">{stat.value}</p>
-            <p className="text-xs text-muted-foreground">
-              Wave Q4 2024 · filtered view
-            </p>
+            <p className="text-xs text-muted-foreground">Wave Q4 2024 · filtered view</p>
           </div>
         ))}
 
-        {/* Remaining placeholder skeleton tiles */}
         {Array.from({ length: Math.max(0, 3 - previewStats.length) }).map((_, i) => (
           <div
             key={`skeleton-${i}`}
@@ -137,14 +138,19 @@ const SectionCard = ({ id, label }: SectionCardProps) => {
             <div className="h-8 w-16 animate-pulse rounded bg-surface-2" />
             <div className="h-2 w-full animate-pulse rounded bg-surface-2" />
             <div className="h-2 w-3/4 animate-pulse rounded bg-surface-2" />
-            <p className="mt-2 text-xs text-muted-foreground">
-              Charts coming in next phase.
-            </p>
+            <p className="mt-2 text-xs text-muted-foreground">Charts coming in next phase.</p>
           </div>
         ))}
       </div>
     </section>
   );
+};
+
+// ── Router ───────────────────────────────────────────────────────────────────
+
+const SectionCard = ({ id, label }: SectionCardProps) => {
+  if (id === "performance") return <PerformanceSectionWrapper />;
+  return <PlaceholderSection id={id} label={label} />;
 };
 
 export default SectionCard;
