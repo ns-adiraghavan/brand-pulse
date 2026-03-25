@@ -16,7 +16,7 @@ interface Props {
   socialMediaPct: number;
 }
 
-const BehavioralInsights = ({ appInstalled, repeatPurchaseRate, codRate, socialMediaPct }: Props) => {
+const BehavioralInsights = ({ repeatPurchaseRate, codRate, socialMediaPct }: Props) => {
   const cards: InsightCard[] = [
     {
       icon: Search,
