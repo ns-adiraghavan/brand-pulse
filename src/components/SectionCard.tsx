@@ -171,6 +171,15 @@ const SectionCard = ({ id, label }: SectionCardProps) => {
     );
   }
 
+  if (id === "deepdive") {
+    return (
+      <section id="deepdive" className="scroll-mt-20">
+        <SectionHeading id="deepdive" label="Funnel Deep Dive" icon="🔬" />
+        <DeepDiveSection />
+      </section>
+    );
+  }
+
   return <PlaceholderSection id={id} label={label} />;
 };
 
