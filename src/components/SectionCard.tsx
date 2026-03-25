@@ -3,6 +3,7 @@ import { useFilters } from "@/context/FilterContext";
 import { getMockData } from "@/data/mockData";
 import PerformanceSection from "@/components/performance/PerformanceSection";
 import PerceptionSection from "@/components/perception/PerceptionSection";
+import CampaignSection from "@/components/campaign/CampaignSection";
 
 interface SectionCardProps {
   id: string;
@@ -136,6 +137,15 @@ const SectionCard = ({ id, label }: SectionCardProps) => {
       <section id="perception" className="scroll-mt-20">
         <SectionHeading id="perception" label="Perception" icon="🧠" />
         <PerceptionSection />
+      </section>
+    );
+  }
+
+  if (id === "campaign") {
+    return (
+      <section id="campaign" className="scroll-mt-20">
+        <SectionHeading label="Campaign" icon="📣" />
+        <CampaignSection />
       </section>
     );
   }
