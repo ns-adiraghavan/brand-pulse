@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import netscribesLogo from "@/assets/netscribes-logo.png";
 
 interface LoginScreenProps {
   onLogin: () => void;
@@ -18,7 +19,7 @@ const LoginScreen = ({ onLogin }: LoginScreenProps) => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
-      {/* Subtle radial glow behind the card */}
+      {/* Subtle radial glow */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -28,36 +29,27 @@ const LoginScreen = ({ onLogin }: LoginScreenProps) => {
       />
 
       <div
-        className="relative z-10 w-full max-w-md rounded-2xl border border-border-dim bg-surface p-10 shadow-2xl"
+        className="relative z-10 w-full max-w-md rounded-2xl border border-border-dim bg-surface p-10"
         style={{ boxShadow: "0 25px 60px -12px hsl(215 41% 5% / 0.8)" }}
       >
-        {/* Logo area */}
-        <div className="mb-8 text-center">
-          {/* Icon mark */}
-          <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-primary shadow-lg">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-7 w-7 text-primary-foreground"
-            >
-              <path d="M3 3v18h18" />
-              <path d="M18 17V9" />
-              <path d="M13 17V5" />
-              <path d="M8 17v-3" />
-            </svg>
+        {/* Logo */}
+        <div className="mb-8 flex flex-col items-center gap-5">
+          <img
+            src={netscribesLogo}
+            alt="Netscribes"
+            className="h-10 w-auto object-contain"
+          />
+          <div className="text-center">
+            <h1 className="font-display text-2xl font-bold leading-tight text-foreground">
+              Brand Health Intelligence Platform
+            </h1>
+            <p className="mt-1.5 text-sm font-medium text-primary">
+              E-Commerce Competitive Intelligence
+            </p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Wave Q4 2024
+            </p>
           </div>
-
-          <h1 className="font-display text-2xl font-bold leading-tight text-foreground">
-            Brand Health Intelligence Platform
-          </h1>
-          <p className="mt-2 text-sm font-medium text-muted-foreground">
-            E-Commerce Competitive Tracker | Wave Q4 2024
-          </p>
         </div>
 
         {/* Form */}
@@ -69,7 +61,7 @@ const LoginScreen = ({ onLogin }: LoginScreenProps) => {
             <Input
               id="username"
               type="email"
-              placeholder="analyst@company.com"
+              placeholder="analyst@netscribes.com"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="border-border-dim bg-surface-2 text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary"
@@ -92,14 +84,15 @@ const LoginScreen = ({ onLogin }: LoginScreenProps) => {
 
           <Button
             type="submit"
-            className="mt-2 w-full bg-primary font-semibold text-primary-foreground hover:bg-primary-glow transition-colors duration-200"
+            className="mt-2 w-full font-semibold text-white transition-colors duration-200"
+            style={{ background: '#1D4ED8' }}
           >
             Sign In
           </Button>
         </form>
 
         <p className="mt-6 text-center text-xs text-muted-foreground">
-          Confidential — For internal use only
+          Confidential — For internal use only · © Netscribes
         </p>
       </div>
     </div>
