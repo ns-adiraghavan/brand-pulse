@@ -2,6 +2,85 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Brand Health Intelligence Platform — dark navy design system */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    /* Navy palette */
+    --background: 215 41% 9%;       /* #0F172A */
+    --surface:    215 28% 17%;      /* #1E293B */
+    --surface-2:  215 25% 23%;      /* #2D3E55 */
+    --border-dim: 215 20% 32%;      /* #334155 */
+
+    --foreground: 0 0% 100%;
+    --muted-foreground: 215 16% 65%; /* #94A3B8 */
+
+    --primary: 221 82% 48%;         /* #1D4ED8 royal blue */
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 221 82% 62%;
+
+    --accent: 199 89% 48%;
+    --accent-foreground: 0 0% 100%;
+
+    /* shadcn compatibility */
+    --card: 215 28% 17%;
+    --card-foreground: 0 0% 100%;
+    --popover: 215 28% 17%;
+    --popover-foreground: 0 0% 100%;
+    --secondary: 215 25% 23%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 215 25% 23%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 215 20% 32%;
+    --input: 215 25% 23%;
+    --ring: 221 82% 48%;
+    --radius: 0.5rem;
+
+    /* sidebar */
+    --sidebar-background: 215 28% 17%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 221 82% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 215 25% 23%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 215 20% 32%;
+    --sidebar-ring: 221 82% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+  h1, h2, h3 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Playfair Display', serif;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: hsl(var(--border-dim));
+    border-radius: 4px;
+  }
+}
+
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
 */
