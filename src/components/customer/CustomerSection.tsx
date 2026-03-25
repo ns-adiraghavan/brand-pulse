@@ -64,7 +64,7 @@ const CustomerSection = () => {
   }, [data]);
 
   return (
-    <div className="space-y-6">
+    <div className={`space-y-6 ${fadeClass}`}>
 
       {/* Part A — Demographic Donuts */}
       <div>
