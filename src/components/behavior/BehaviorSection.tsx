@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useFilters } from '@/context/FilterContext';
 import { getMockData } from '@/data/mockData';
+import { useChartFade } from '@/hooks/useChartFade';
 import ShareOfAwarenessChart from './ShareOfAwarenessChart';
 import ConsiderationSplitChart from './ConsiderationSplitChart';
 import NonConsiderationChart from './NonConsiderationChart';
@@ -11,6 +12,7 @@ const BehaviorSection = () => {
   const { filters } = useFilters();
   const data = useMemo(() => getMockData(filters), [filters]);
   const { behavior } = data;
+  const fadeClass = useChartFade(filters);
 
   // Synthetic purchase behaviour values derived from kpis/behavior seed
   const cartAbandonmentRate = useMemo(() => {
@@ -32,7 +34,7 @@ const BehaviorSection = () => {
   }, [data]);
 
   return (
-    <div className="space-y-6">
+    <div className={`space-y-6 ${fadeClass}`}>
       {/* Row 1 — Donut + Consideration Split */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <ShareOfAwarenessChart
