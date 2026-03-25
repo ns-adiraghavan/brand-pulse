@@ -55,8 +55,10 @@ const HeatmapTable = ({ brands, perceptionHeatmap }: Props) => {
 
   return (
     <div className="space-y-3">
-      {/* Colour legend */}
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+      {/* Top legend row: perception scale + index score legend */}
+      <div className="flex flex-wrap items-center justify-between gap-y-2">
+        {/* Perception colour scale */}
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
           Scale:
         </span>
