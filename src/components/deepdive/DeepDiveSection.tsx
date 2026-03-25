@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useFilters } from '@/context/FilterContext';
 import { getMockData } from '@/data/mockData';
+import { useChartFade } from '@/hooks/useChartFade';
 import SegmentIndexTable from './SegmentIndexTable';
 import BrandSegmentGrid from './BrandSegmentGrid';
 import InsightCallouts from './InsightCallouts';
@@ -11,6 +12,7 @@ const DeepDiveSection = () => {
   const { filters } = useFilters();
   const data = useMemo(() => getMockData(filters), [filters]);
   const [mode, setMode] = useState<ViewMode>('segment');
+  const fadeClass = useChartFade(filters);
 
   return (
     <div className="space-y-6">
