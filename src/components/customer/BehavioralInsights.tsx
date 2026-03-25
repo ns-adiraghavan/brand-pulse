@@ -1,7 +1,7 @@
-import { Search, CreditCard, Heart } from 'lucide-react';
+import { Search, CreditCard, Heart, type LucideIcon } from 'lucide-react';
 
 interface InsightCard {
-  icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
+  icon: LucideIcon;
   title: string;
   stat: string;
   description: string;
@@ -11,7 +11,6 @@ interface InsightCard {
 }
 
 interface Props {
-  appInstalled: number;
   repeatPurchaseRate: number;
   codRate: number;
   socialMediaPct: number;
