@@ -39,8 +39,10 @@ const SECTION_META: Record<string, { icon: string; description: string }> = {
 function SectionHeading({ label, icon }: { id?: string; label: string; icon: string }) {
   return (
     <div className="mb-5 flex items-center gap-3">
-      <span className="text-xl">{icon}</span>
-      <h2 className="text-lg font-bold tracking-tight text-foreground">{label}</h2>
+      {/* Left blue accent bar */}
+      <div className="h-6 w-[3px] rounded-full shrink-0" style={{ background: 'hsl(var(--primary))' }} />
+      <span className="text-xl leading-none">{icon}</span>
+      <h2 className="text-[20px] font-bold tracking-tight text-foreground">{label}</h2>
       <div className="flex-1 border-t border-border-dim" />
       <span className="rounded-full bg-primary/10 px-3 py-0.5 text-xs font-medium text-primary">
         Wave Q4 2024
