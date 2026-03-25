@@ -4,6 +4,7 @@ import { getMockData } from "@/data/mockData";
 import PerformanceSection from "@/components/performance/PerformanceSection";
 import PerceptionSection from "@/components/perception/PerceptionSection";
 import CampaignSection from "@/components/campaign/CampaignSection";
+import BehaviorSection from "@/components/behavior/BehaviorSection";
 
 interface SectionCardProps {
   id: string;
@@ -146,6 +147,15 @@ const SectionCard = ({ id, label }: SectionCardProps) => {
       <section id="campaign" className="scroll-mt-20">
         <SectionHeading label="Campaign" icon="📣" />
         <CampaignSection />
+      </section>
+    );
+  }
+
+  if (id === "behavior") {
+    return (
+      <section id="behavior" className="scroll-mt-20">
+        <SectionHeading id="behavior" label="Category & Behaviour" icon="🛒" />
+        <BehaviorSection />
       </section>
     );
   }
