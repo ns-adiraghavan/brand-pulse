@@ -1,5 +1,6 @@
 import { ArrowUp, ArrowDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useFilters } from '@/context/FilterContext';
 import type { Brand, FunnelEntry, WTPBrand } from '@/data/mockData';
 
 // ── Constants ────────────────────────────────────────────────────────────────
@@ -41,32 +42,57 @@ interface CardProps {
   funnel: FunnelEntry;
   wtp: WTPBrand;
   avg: CatAvg;
+  isCompany: boolean;
+  isSelected: boolean;
+  anySelected: boolean;
 }
 
-const BrandFunnelCard = ({ brand, funnel: f, wtp, avg }: CardProps) => {
-  const isCompany = brand.id === 'company';
+const BrandFunnelCard = ({ brand, funnel: f, wtp, avg, isCompany, isSelected, anySelected }: CardProps) => {
+  // Visual state:
+  //  • isSelected (from Perception heatmap click) → brand-colored glow ring
+  //  • isCompany + not selected → primary blue glow (default)
+  //  • anySelected && !isSelected && !isCompany → dimmed
+  const dimmed = anySelected && !isSelected && !isCompany;
+
+  const cardStyle = (() => {
+    if (isSelected) {
+      return {
+        boxShadow: `0 0 0 2px ${brand.color}70, 0 0 28px ${brand.color}25`,
+        borderColor: `${brand.color}80`,
+        background: 'hsl(215 28% 20%)',
+      };
+    }
+    if (isCompany) {
+      return {
+        background: 'hsl(215 28% 19%)',
+        boxShadow: `0 0 0 1px hsl(221 82% 48% / 0.25), 0 0 28px hsl(221 82% 48% / 0.18)`,
+      };
+    }
+    return undefined;
+  })();
 
   return (
     <div
       className={cn(
-        'relative flex flex-col gap-3 rounded-xl border p-3 transition-all duration-500',
-        isCompany ? 'border-primary/50' : 'border-border-dim bg-surface'
+        'relative flex flex-col gap-3 rounded-xl border p-3 transition-all duration-300',
+        isCompany && !isSelected ? 'border-primary/50' : 'border-border-dim bg-surface',
+        dimmed && 'opacity-50 scale-[0.98]',
       )}
-      style={
-        isCompany
-          ? {
-              background: 'hsl(215 28% 19%)',
-              boxShadow: `0 0 0 1px hsl(221 82% 48% / 0.25), 0 0 28px hsl(221 82% 48% / 0.18)`,
-            }
-          : undefined
-      }
+      style={cardStyle}
     >
+      {/* Selected indicator pill */}
+      {isSelected && (
+        <div
+          className="absolute -top-2.5 left-1/2 -translate-x-1/2 rounded-full px-2 py-0.5 text-[9px] font-bold"
+          style={{ background: brand.color, color: '#fff' }}
+        >
+          ● highlighted from Perception
+        </div>
+      )}
+
       {/* Brand header */}
       <div className="flex items-center gap-1.5 pr-10 min-w-0">
-        <div
-          className="h-2.5 w-2.5 shrink-0 rounded-full"
-          style={{ backgroundColor: brand.color }}
-        />
+        <div className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: brand.color }} />
         <span className="truncate text-xs font-bold text-foreground">{brand.label}</span>
       </div>
 
@@ -93,38 +119,22 @@ const BrandFunnelCard = ({ brand, funnel: f, wtp, avg }: CardProps) => {
 
           return (
             <div key={key}>
-              {/* Label + value */}
               <div className="mb-0.5 flex items-baseline justify-between gap-1">
                 <span className="text-[10px] text-muted-foreground leading-none">{label}</span>
                 <span className="text-[11px] font-bold tabular-nums text-foreground leading-none">
                   {value}%
                 </span>
               </div>
-              {/* Bar track */}
               <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-2">
                 <div
                   className="h-full rounded-full transition-all duration-500"
-                  style={{
-                    width: `${value}%`,
-                    backgroundColor: `${brand.color}${alpha}`,
-                  }}
+                  style={{ width: `${value}%`, backgroundColor: `${brand.color}${alpha}` }}
                 />
               </div>
-              {/* Delta vs avg */}
-              <div
-                className={cn(
-                  'mt-0.5 flex items-center gap-0.5',
-                  above ? 'text-emerald-400' : 'text-rose-400'
-                )}
-              >
-                {above ? (
-                  <ArrowUp className="h-2.5 w-2.5 shrink-0" />
-                ) : (
-                  <ArrowDown className="h-2.5 w-2.5 shrink-0" />
-                )}
+              <div className={cn('mt-0.5 flex items-center gap-0.5', above ? 'text-emerald-400' : 'text-rose-400')}>
+                {above ? <ArrowUp className="h-2.5 w-2.5 shrink-0" /> : <ArrowDown className="h-2.5 w-2.5 shrink-0" />}
                 <span className="text-[9px] font-medium">
-                  {above ? '+' : ''}
-                  {delta} avg
+                  {above ? '+' : ''}{delta} avg
                 </span>
               </div>
             </div>
@@ -149,7 +159,6 @@ const BrandFunnelCard = ({ brand, funnel: f, wtp, avg }: CardProps) => {
             />
           ))}
         </div>
-        {/* % labels per segment */}
         <div className="mt-1 flex justify-between">
           {WTP_SEGMENTS.map(({ key, color }) => (
             <span key={key} className="text-[9px] font-semibold tabular-nums" style={{ color }}>
@@ -172,6 +181,7 @@ interface Props {
 
 const BrandFunnelGrid = ({ brands, funnel, willingnessToPay }: Props) => {
   const avg = computeAvg(funnel);
+  const { selectedBrand } = useFilters();
 
   return (
     <div className="space-y-4">
@@ -182,7 +192,16 @@ const BrandFunnelGrid = ({ brands, funnel, willingnessToPay }: Props) => {
             const f = funnel.find((x) => x.brandId === brand.id)!;
             const w = willingnessToPay.find((x) => x.brandId === brand.id)!;
             return (
-              <BrandFunnelCard key={brand.id} brand={brand} funnel={f} wtp={w} avg={avg} />
+              <BrandFunnelCard
+                key={brand.id}
+                brand={brand}
+                funnel={f}
+                wtp={w}
+                avg={avg}
+                isCompany={brand.id === 'company'}
+                isSelected={selectedBrand === brand.id}
+                anySelected={selectedBrand !== null}
+              />
             );
           })}
         </div>

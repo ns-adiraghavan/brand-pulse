@@ -23,6 +23,9 @@ interface FilterContextValue {
   filters: Filters;
   setFilter: <K extends keyof Filters>(key: K, value: Filters[K]) => void;
   resetFilters: () => void;
+  /** Brand selected via Perception heatmap column click — highlights funnel card */
+  selectedBrand: string | null;
+  setSelectedBrand: (id: string | null) => void;
 }
 
 const FilterContext = createContext<FilterContextValue | undefined>(undefined);
@@ -33,6 +36,7 @@ const FilterContext = createContext<FilterContextValue | undefined>(undefined);
 
 export const FilterProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
+  const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
 
   const setFilter = useCallback(<K extends keyof Filters>(key: K, value: Filters[K]) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -40,10 +44,11 @@ export const FilterProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const resetFilters = useCallback(() => {
     setFilters(DEFAULT_FILTERS);
+    setSelectedBrand(null);
   }, []);
 
   return (
-    <FilterContext.Provider value={{ filters, setFilter, resetFilters }}>
+    <FilterContext.Provider value={{ filters, setFilter, resetFilters, selectedBrand, setSelectedBrand }}>
       {children}
     </FilterContext.Provider>
   );
