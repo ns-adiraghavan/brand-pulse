@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useFilters } from '@/context/FilterContext';
 import { getMockData } from '@/data/mockData';
+import { useChartFade } from '@/hooks/useChartFade';
 import DemographicDonut from './DemographicDonut';
 import PlatformBehaviorTiles from './PlatformBehaviorTiles';
 import InfoSourcesChart from './InfoSourcesChart';
@@ -10,6 +11,7 @@ const CustomerSection = () => {
   const { filters } = useFilters();
   const data = useMemo(() => getMockData(filters), [filters]);
   const { customerProfile } = data;
+  const fadeClass = useChartFade(filters);
 
   // ── Demographic donut data ──────────────────────────────────────────────────
 
