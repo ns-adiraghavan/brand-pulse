@@ -6,6 +6,7 @@ import PerceptionSection from "@/components/perception/PerceptionSection";
 import CampaignSection from "@/components/campaign/CampaignSection";
 import BehaviorSection from "@/components/behavior/BehaviorSection";
 import CustomerSection from "@/components/customer/CustomerSection";
+import DeepDiveSection from "@/components/deepdive/DeepDiveSection";
 
 interface SectionCardProps {
   id: string;
@@ -166,6 +167,15 @@ const SectionCard = ({ id, label }: SectionCardProps) => {
       <section id="customer" className="scroll-mt-20">
         <SectionHeading id="customer" label="Customer Understanding" icon="👥" />
         <CustomerSection />
+      </section>
+    );
+  }
+
+  if (id === "deepdive") {
+    return (
+      <section id="deepdive" className="scroll-mt-20">
+        <SectionHeading id="deepdive" label="Funnel Deep Dive" icon="🔬" />
+        <DeepDiveSection />
       </section>
     );
   }

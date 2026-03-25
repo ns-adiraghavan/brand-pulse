@@ -146,14 +146,20 @@ export type DeepDiveSegment =
   | 'Gen Z (18-24)'
   | 'Millennials (25-34)'
   | 'Gen X (35-44)'
+  | 'Boomers (45+)'
   | 'Male'
   | 'Female'
   | 'Tier 1'
   | 'Tier 2'
+  | 'Tier 3'
   | 'Low Income'
+  | 'Mid Income'
   | 'High Income'
   | 'App User'
-  | 'Non-App User';
+  | 'Non-App User'
+  | 'New Customer'
+  | 'Repeat Customer'
+  | 'Lapsed Customer';
 
 export type DeepDiveMetric = 'awareness' | 'familiarity' | 'consideration' | 'purchaseIntent';
 
@@ -164,6 +170,8 @@ export interface DeepDiveRow {
   consideration: number;
   purchaseIntent: number;
 }
+
+export type SegmentGroup = 'age' | 'gender' | 'geography' | 'income' | 'platform' | 'type';
 
 export interface MockData {
   brands: Brand[];
@@ -487,17 +495,23 @@ export function getMockData(filters: Filters): MockData {
   type SegmentBase = [number, number, number, number]; // aw, fam, con, pi
 
   const segmentBase: Record<DeepDiveSegment, SegmentBase> = {
-    'Gen Z (18-24)':    [112, 100,  92,  88],
+    'Gen Z (18-24)':       [112, 100,  92,  88],
     'Millennials (25-34)': [108, 106, 110, 108],
-    'Gen X (35-44)':    [ 96,  98, 100,  95],
-    'Male':             [102, 103, 104, 105],
-    'Female':           [ 99, 100, 101,  98],
-    'Tier 1':           [110, 112, 115, 116],
-    'Tier 2':           [100, 100, 100, 100],
-    'Low Income':       [ 95,  90,  86,  82],
-    'High Income':      [108, 112, 118, 122],
-    'App User':         [128, 130, 133, 135],
-    'Non-App User':     [ 78,  74,  70,  68],
+    'Gen X (35-44)':       [ 96,  98, 100,  95],
+    'Boomers (45+)':       [ 88,  85,  82,  78],
+    'Male':                [102, 103, 104, 105],
+    'Female':              [ 99, 100, 101,  98],
+    'Tier 1':              [110, 112, 115, 116],
+    'Tier 2':              [100, 100, 100, 100],
+    'Tier 3':              [ 88,  85,  83,  80],
+    'Low Income':          [ 95,  90,  86,  82],
+    'Mid Income':          [101, 100, 102, 100],
+    'High Income':         [108, 112, 118, 122],
+    'App User':            [128, 130, 133, 135],
+    'Non-App User':        [ 78,  74,  70,  68],
+    'New Customer':        [114, 105,  94,  88],
+    'Repeat Customer':     [106, 112, 118, 124],
+    'Lapsed Customer':     [ 82,  79,  74,  70],
   };
 
   const deepDiveMatrix: DeepDiveRow[] = (Object.entries(segmentBase) as [DeepDiveSegment, SegmentBase][]).map(
