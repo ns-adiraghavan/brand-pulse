@@ -395,7 +395,7 @@ const CampaignLiftCard = ({ adRecall }: { adRecall: number }) => {
   return (
     <div className="flex flex-col rounded-xl border border-border-dim bg-surface p-5">
       {/* Header */}
-      <div className="mb-1 flex items-center gap-2.5">
+      <div className="mb-3 flex items-center gap-2.5">
         <div
           className="flex h-9 w-9 items-center justify-center rounded-xl"
           style={{ background: '#10B98118' }}

@@ -67,7 +67,7 @@ const BrandFunnelCard = ({ brand, funnel: f, wtp, avg, isCompany, isSelected, an
     <div
       onClick={onClick}
       className={cn(
-        'relative flex flex-col gap-3 rounded-xl border p-3 transition-all duration-300 cursor-pointer',
+        'relative flex flex-col gap-3 rounded-xl border p-4 transition-all duration-300 cursor-pointer',
         'hover:border-primary/40 hover:shadow-md hover:shadow-primary/5',
         isCompany && !isSelected ? 'border-primary/50' : 'border-border-dim bg-surface',
         dimmed && 'opacity-50 scale-[0.98]',
