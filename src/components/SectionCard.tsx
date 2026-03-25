@@ -6,6 +6,7 @@ import PerceptionSection from "@/components/perception/PerceptionSection";
 import CampaignSection from "@/components/campaign/CampaignSection";
 import BehaviorSection from "@/components/behavior/BehaviorSection";
 import CustomerSection from "@/components/customer/CustomerSection";
+import DeepDiveSection from "@/components/deepdive/DeepDiveSection";
 
 interface SectionCardProps {
   id: string;
