@@ -1,4 +1,4 @@
-import { Info, UserCircle2, Menu, X } from "lucide-react";
+import { Info, LogOut, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -14,6 +14,7 @@ interface DashboardHeaderProps {
   onMenuClick: () => void;
   selectedBrand: string | null;
   onClearBrand: () => void;
+  onLogout: () => void;
 }
 
 const BRAND_COLORS: Record<string, string> = {
