@@ -40,9 +40,9 @@ const LoginScreen = ({ onLogin }: LoginScreenProps) => {
             className="h-10 w-auto object-contain"
           />
           <div className="text-center">
-            <h1 className="font-display text-2xl font-bold leading-tight text-foreground">
-              Brand Health Intelligence Platform
-            </h1>
+          <h1 className="text-2xl font-bold leading-tight tracking-tight text-foreground" style={{ fontFamily: 'Inter, sans-serif' }}>
+            Brand Health Intelligence Platform
+          </h1>
             <p className="mt-1.5 text-sm font-medium text-primary">
               E-Commerce Competitive Intelligence
             </p>
