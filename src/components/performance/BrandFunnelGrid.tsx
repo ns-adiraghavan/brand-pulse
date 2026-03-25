@@ -74,13 +74,14 @@ const BrandFunnelCard = ({ brand, funnel: f, wtp, avg, isCompany, isSelected, an
       )}
       style={cardStyle}
     >
-      {/* Selected indicator pill */}
+      {/* Selected indicator — inline banner, no overflow */}
       {isSelected && (
         <div
-          className="absolute -top-2.5 left-1/2 -translate-x-1/2 rounded-full px-2 py-0.5 text-[9px] font-bold whitespace-nowrap"
-          style={{ background: brand.color, color: '#fff' }}
+          className="flex items-center justify-center gap-1 rounded-lg py-0.5 text-[9px] font-bold"
+          style={{ background: `${brand.color}22`, color: brand.color, border: `1px solid ${brand.color}44` }}
         >
-          ● highlighted
+          <span className="h-1.5 w-1.5 rounded-full" style={{ background: brand.color }} />
+          highlighted
         </div>
       )}
 
