@@ -33,7 +33,7 @@ const BRAND_LABELS: Record<string, string> = {
 };
 
 const DashboardHeader = ({
-  sections, activeSection, onNavigate, onMenuClick, selectedBrand, onClearBrand,
+  sections, activeSection, onNavigate, onMenuClick, selectedBrand, onClearBrand, onLogout,
 }: DashboardHeaderProps) => {
   const [infoOpen, setInfoOpen] = useState(false);
 
@@ -114,12 +114,16 @@ const DashboardHeader = ({
 
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-border-dim bg-surface-2 text-muted-foreground transition-colors hover:text-foreground">
-                <UserCircle2 className="h-5 w-5" />
-              </div>
+              <button
+                onClick={onLogout}
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-border-dim bg-surface-2 text-muted-foreground transition-colors hover:border-rose-500/50 hover:text-rose-400"
+                aria-label="Log out"
+              >
+                <LogOut className="h-4 w-4" />
+              </button>
             </TooltipTrigger>
             <TooltipContent side="bottom" className="border-border-dim bg-surface text-foreground text-xs">
-              Admin User
+              Log Out
             </TooltipContent>
           </Tooltip>
         </div>
