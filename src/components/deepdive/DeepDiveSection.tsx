@@ -38,17 +38,19 @@ const DeepDiveSection = () => {
       </div>
 
       {/* Matrix or Brand Grid */}
-      {mode === 'segment' ? (
-        <SegmentIndexTable matrix={data.deepDiveMatrix} />
-      ) : (
-        <BrandSegmentGrid
-          brands={data.brands}
-          funnel={data.funnel}
-          matrix={data.deepDiveMatrix}
-        />
-      )}
+      <div className={fadeClass}>
+        {mode === 'segment' ? (
+          <SegmentIndexTable matrix={data.deepDiveMatrix} />
+        ) : (
+          <BrandSegmentGrid
+            brands={data.brands}
+            funnel={data.funnel}
+            matrix={data.deepDiveMatrix}
+          />
+        )}
+      </div>
 
-      {/* Insight Callouts — always visible */}
+      {/* Insight Callouts */}
       <div>
         <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
           Key Insights
