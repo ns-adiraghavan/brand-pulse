@@ -4,6 +4,7 @@ import { getMockData } from "@/data/mockData";
 import PerformanceSection from "@/components/performance/PerformanceSection";
 import PerceptionSection from "@/components/perception/PerceptionSection";
 import CampaignSection from "@/components/campaign/CampaignSection";
+import BehaviorSection from "@/components/behavior/BehaviorSection";
 
 interface SectionCardProps {
   id: string;
