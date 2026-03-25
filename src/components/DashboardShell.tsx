@@ -15,7 +15,7 @@ const sections = [
   { id: "deepdive",    label: "Deep Dive"   },
 ];
 
-const DashboardShell = () => {
+const DashboardShell = ({ onLogout }: { onLogout: () => void }) => {
   const [activeSection, setActiveSection] = useState("performance");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { selectedBrand, setSelectedBrand } = useFilters();
@@ -63,6 +63,7 @@ const DashboardShell = () => {
         onMenuClick={() => setSidebarOpen(true)}
         selectedBrand={selectedBrand}
         onClearBrand={() => setSelectedBrand(null)}
+        onLogout={onLogout}
       />
 
       {/* Body: sidebar + main */}
