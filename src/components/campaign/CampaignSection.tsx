@@ -452,7 +452,7 @@ const CampaignSection = () => {
         campaignAwareness={campaignKpis.campaignAwareness}
         messageRecall={campaignKpis.messageRecall}
       />
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_320px]">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_380px]">
         <ActionTakenChart data={campaignKpis.actionTaken} />
         <CampaignLiftCard adRecall={campaignKpis.adRecall} />
       </div>
