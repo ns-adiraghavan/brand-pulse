@@ -48,7 +48,7 @@ const DemographicDonut = ({ title, data }: Props) => {
     <div className="flex flex-col rounded-xl border border-border-dim bg-surface p-4">
       <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">{title}</p>
 
-      <div className="relative mx-auto" style={{ width: 120, height: 120 }}>
+      <div className="relative mx-auto" style={{ width: 160, height: 160 }}>
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
