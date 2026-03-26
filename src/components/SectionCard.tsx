@@ -54,9 +54,6 @@ function SectionHeading({ id, label }: { id: string; label: string }) {
         <span className="text-xl leading-none">{meta.icon}</span>
         <h2 className="text-[20px] font-bold tracking-tight text-foreground">{label}</h2>
         <div className="flex-1 border-t border-border-dim" />
-        <span className="rounded-full bg-primary/10 px-3 py-0.5 text-xs font-medium text-primary">
-          Wave Q4 2024
-        </span>
       </div>
       {meta.subtitle && (
         <p className="mt-1.5 pl-7 text-sm italic text-muted-foreground">
